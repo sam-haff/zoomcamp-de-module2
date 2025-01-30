@@ -1,0 +1,21 @@
+name: Validate & Deploy 
+on:
+  push:
+    branches:
+      - main
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v3
+      - name: Validate
+        uses: kestra/validate
+        with:
+          resource: flow
+          directory: kestra/flows
+          server: ${{ secrets.KESTRA_INST_ADDR }}
+          user: kestra
+          password: ${{ secrets.KESTRA_PWD }}
+      
+
