@@ -1,5 +1,8 @@
-id: ingest_taxi_data_schedule
+id: ingest_taxi_data_gcp_schedule
 namespace: company.team
+
+concurrency:
+  limit: 1
 
 inputs:
   - id: taxi_type

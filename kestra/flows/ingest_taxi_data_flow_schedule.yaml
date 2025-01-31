@@ -1,4 +1,4 @@
-id: ingest_taxi_data
+id: ingest_taxi_data_schedule
 namespace: company.team
 
 concurrency:

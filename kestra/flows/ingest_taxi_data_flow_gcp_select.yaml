@@ -1,4 +1,4 @@
-id: ingest_taxi_data_gcp
+id: ingest_taxi_data_gcp_select
 namespace: company.team
 
 inputs:
