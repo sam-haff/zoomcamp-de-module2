@@ -15,7 +15,7 @@ jobs:
           resource: flow
           directory: kestra/flows
           server: ${{ secrets.KESTRA_INST_ADDR }}
-          user: kestra
+          user: ${{secrets.KESTRA_USER}}
           password: ${{ secrets.KESTRA_PWD }}
       
 
