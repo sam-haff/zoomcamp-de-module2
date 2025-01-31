@@ -1,0 +1,11 @@
+Answer: green_tripdata_2020-04.csv
+ 
+Explanation:
+- Variable rendering is very similar to 
+string interpolation in Python. In that very case:
+    taxi = "green"
+    year = "2020"
+    mo = "04"
+    res = f'{taxi}_tripdata_{year}_{mo}.csv'
+<res> will be rendered value.(for explanation purposes 
+only, as it's easily done in the mind) 

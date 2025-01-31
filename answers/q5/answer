@@ -1,0 +1,6 @@
+Answer: 1,925,152
+
+Explanation:
+Two ways, how it can be solved in my setup:
+- 1) Same as prev, slightly different query(sol1_query.sql)
+- 2) Query COUNT(*) on the corresponding external table(sol2_query.sql)

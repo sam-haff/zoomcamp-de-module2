@@ -1,0 +1,8 @@
+Answer: 24,648,499
+
+Explanation:
+- Given merged BQ dataset, 
+we can find the answer using the following query:
+    SELECT COUNT(*) 
+    FROM `kestra-de.bq_dataset.yellow_tripdata`
+    WHERE file LIKE 'yellow_tripdata_2020_%';
