@@ -1,9 +1,10 @@
 # Module 2. Solutions
 
 ## Kestra
-  **GCP compute instance** is used to host **Kestra**. **Terraform** is used for the allocation of all the required resources on the GCP.
+   **Kestra** is hosted on the **GCP compute instance**. Allocation of the GCP resources is done with the help of **Terraform**. 
 All the **.tf** files can be found in the <em>./terraform</em> directory.\
-   **Kestra flows** are delivered to the GCP Kestra instance by means of the **GitHub Actions workflows**(<em> ./.github</em> folder).\
+   **docker-compose.yml** for the **Kestra** instance is in the <em>./terraform</em> dir. \
+   **Kestra flows** are delivered to the GCP **Kestra** instance by means of the **GitHub Actions workflows**(<em> ./.github</em> folder).\
 The Kestra flows are in the <em>./kestra/flows</em> directory. Flows with the <em>\*gcp\*</em> in the filename are the only ones that are actually used and work in the **cloud environment**, others rely on the PG instance and are there only for reference.
 
 ## Module Questions

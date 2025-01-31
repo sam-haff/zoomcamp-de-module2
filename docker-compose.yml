@@ -1,3 +1,6 @@
+
+### docker-compose for the local deployment ###
+
 volumes:
   postgres-data:
     driver: local
