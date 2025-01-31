@@ -3,4 +3,4 @@ Answer: 128.3 MB
 Steps to produce the answer:
 - After ingestion of the whole required data(2019-01 to 2021-07),
 checked the GCS bucket for a file with name yellow_tripdata_2020-12.csv
-and then its size was the answer.
+and then its size is the answer.

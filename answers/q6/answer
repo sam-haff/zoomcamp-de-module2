@@ -1,4 +1,8 @@
 Answer: America/New_York
 
 Explanation:
-<timezone> property should be set a value, the one from the https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List , second column.
+Kestra docs
+    The time zone identifier (i.e. the second column in
+    the Wikipedia table https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List )
+    to use for evaluating the cron expression. Default value
+    is the server default zone ID.

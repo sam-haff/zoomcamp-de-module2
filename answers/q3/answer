@@ -1,7 +1,7 @@
 Answer: 24,648,499
 
 Explanation:
-- Given merged BQ dataset, 
+- Given the merged BQ dataset, 
 we can find the answer using the following query:
     SELECT COUNT(*) 
     FROM `kestra-de.bq_dataset.yellow_tripdata`
