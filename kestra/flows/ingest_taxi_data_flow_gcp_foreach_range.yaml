@@ -1,0 +1,114 @@
+# Ingests data from a date range.
+
+# Useful, when you need to ingest data from the continious range of dates.
+
+# Uses Pebble lang to calculate dates values from the input dates range
+# to then pass them to the <foreach> tasks.
+# More comments about the impl in the <variables> section.
+
+id: ingest_taxi_data_gcp_foreach_range
+namespace: company.team
+
+concurrency:
+  limit: 1
+
+inputs:
+  - id: taxi_types
+    type: ARRAY
+    itemType: STRING
+    defaults: ["green", "yellow"]
+
+  # inputs for dates range
+  - id: range_start_year
+    type: SELECT
+    values: ["2019", "2020", "2021"]
+    defaults: "2019"
+  - id: range_start_month
+    type: SELECT
+    values: ["01","02","03","04","05","06","07","08","09","10","11","12"]
+    defaults: "01"
+  - id: range_end_year
+    type: SELECT
+    values: ["2019", "2020", "2021"]
+    defaults: "2021"
+  - id: range_end_month
+    type: SELECT
+    values: ["01","02","03","04","05","06","07","08","09","10","11","12"]
+    defaults: "07"
+
+variables:
+  # Current for loop(pseudocode):
+  # for taxi_type in taxi_types
+  #   for year in vars,years_list:
+  #     for month in vars.months_lists
+  #       ingest_taxi_data_gcp_foreach_select(taxi_type, year, month)
+
+  # Make dynamic list of years for <foreach> task.
+  years_list: "{{ range(inputs.range_start_year| number('INT'), inputs.range_end_year | number('INT'))}}"
+  # Make dynamic list of months for <foreach> task(id: for_each_month).
+  # Changes depending on the current <year> value(see <curr_start_month>, <curr_end_month>).
+  months_list: "{{ range( render(vars.curr_start_month) | trim | number('BIGDECIMAL'), render(vars.curr_end_month) | trim | number('BIGDECIMAL')) }}"
+  # Given the current year(in the <foreach> iteration through
+  # them, id: for_each_year), get first month for iteration through months. 
+  curr_start_month: |
+    {% if render(vars.year_s) == inputs.range_start_year %}
+      {{inputs.range_start_month}}
+    {% else %}
+      {{1}}
+    {% endif %}
+  # Given the current year(in the <foreach> iteration through
+  # them, id: for_each_year), get last month for iteration through months.
+  curr_end_month: |
+    {% if render(vars.year_s) == inputs.range_end_year %}
+      {{inputs.range_end_month}}
+    {% else %}
+      {{12}}
+    {% endif %}
+
+  # months loop body(id: for_body)
+  taxi_type: "{{parents[1].taskrun.value}}"
+  year: "{{parents[0].taskrun.value}}"
+  month: "{{taskrun.value | number('INT') | numberFormat('00')}}"
+  # years loop(id: for_each_year)
+  year_s: "{{taskrun.value}}" # for month list calculation
+
+pluginDefaults:
+  - type: io.kestra.plugin.gcp
+    values:
+      serviceAccount: "{{kv('GCP_CREDS')}}"
+      projectId: "{{kv('GCP_PROJECT')}}"
+      location: "{{kv('GCP_LOC')}}"
+      bucket: "{{kv('GCP_BUCKET')}}"
+  - type: io.kestra.plugin.jdbc.postgresql
+    values:
+      username: root
+      password: root
+      url: jdbc:postgresql://data-db:5432/taxi
+
+tasks:
+  - id: set_labels
+    type: io.kestra.plugin.core.execution.Labels
+    labels:
+      taxi-types: "{{ inputs.taxi_types | join(', ') }}"
+      date-range: "{{ inputs.range_start_year }}-{{ inputs.range_start_month }} to {{ inputs.range_end_year }}-{{ inputs.range_end_month }}"
+  - id: for_each_taxi_type
+    type: io.kestra.plugin.core.flow.ForEach
+    values: "{{inputs.taxi_types}}"
+    tasks:
+      - id: for_each_year
+        type: io.kestra.plugin.core.flow.ForEach
+        values: "{{render(vars.years_list)}}"
+        tasks:
+          - id: for_each_month
+            type: io.kestra.plugin.core.flow.ForEach
+            values: "{{render(vars.months_list)}}"
+            tasks:
+                - id: for_body
+                  type: io.kestra.plugin.core.flow.Subflow
+                  namespace: company.team
+                  flowId: ingest_taxi_data_gcp_select
+                  inputs:
+                    taxi_type: "{{render(vars.taxi_type)}}"
+                    year: "{{render(vars.year)}}"
+                    month: "{{render(vars.month)}}"
+
