@@ -1,6 +1,6 @@
 # Ingests data from a date range.
 
-# Useful, when you need to ingest data from the continious range of dates.
+# Useful, when you need to ingest data from the continuous range of dates.
 
 # Uses Pebble lang to calculate dates values from the input dates range
 # to then pass them to the <foreach> tasks.
