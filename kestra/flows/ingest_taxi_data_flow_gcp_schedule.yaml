@@ -28,12 +28,7 @@ pluginDefaults:
       projectId: "{{kv('GCP_PROJECT')}}"
       location: "{{kv('GCP_LOC')}}"
       bucket: "{{kv('GCP_BUCKET')}}"
-  - type: io.kestra.plugin.jdbc.postgresql
-    values:
-      username: root
-      password: root
-      url: jdbc:postgresql://data-db:5432/taxi
-      
+        
 triggers:
   - id: monthly_yellow
     type: io.kestra.plugin.core.trigger.Schedule
