@@ -15,4 +15,4 @@ The Kestra flows are in the <em>./kestra/flows</em> directory. Flows with the <e
 - **ingest_taxi_data_flow_gcp_foreach_truncate2021** - same as ingest_taxi_data_flow_gcp_foreach_range, but excludes 2021 months after July to avoid failing on the non-existing data.
 
 ## Module Questions
-  The answers along with the explanation are in the <em>./answers</em> folder. The required data was ingested using backfill execution, as was suggested by the hint in the Module task. Additionally, flows based on <foreach> task were implemented as stated by the bonus task.
+  The answers along with the explanation are in the <em>./answers</em> folder. The required data was ingested using backfill execution, as was suggested by the hint in the Module task. Additionally, flows based on <em>foreach</em> task were implemented as stated by the bonus task.
