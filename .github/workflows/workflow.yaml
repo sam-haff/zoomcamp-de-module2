@@ -14,7 +14,7 @@ jobs:
         uses: actions/cache@v4
         with:
           lookup-only: true
-          path: kestra/flows
+          path: .gitignore # dummy file, could be anything, we use <lookup-only> option anyways
           key: ${{ hashFiles('kestra/flows/*.yaml') }}-flows-hash
       - name: Validate
         uses: kestra-io/validate-action@develop
